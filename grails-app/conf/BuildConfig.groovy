@@ -9,16 +9,11 @@ grails.project.dependency.resolution = {
 
     repositories {
         grailsHome()
-        grailsPlugins()
-        grailsCentral()
+        mavenLocal()
 
-        mavenCentral()
-        mavenRepo "https://repository.intuitive-collaboration.com/nexus/content/repositories/pillarone-public/"
-        mavenRepo("https://repository.intuitive-collaboration.com/nexus/content/repositories/pillarone-public-snapshot/") {
+        mavenRepo (name:"zh-artisan-test" , url:"http://zh-artisan-test.art-allianz.com:8085/nexus/content/groups/public/") {
             updatePolicy System.getProperty('snapshotUpdatePolicy') ?: 'daily'
         }
-        mavenRepo "http://repo.spring.io/milestone/" //needed for spring-security-core 2.0-rc2 plugin
-
     }
 
     plugins {
@@ -36,8 +31,8 @@ grails.project.dependency.resolution = {
         compile ":excel-import:1.0.0"
 
         if (appName == "RiskAnalyticsPropertyCasualty") {
-            runtime "org.pillarone:risk-analytics-core:1.9.1"
-            runtime("org.pillarone:risk-analytics-commons:1.9.2") { transitive = false }
+            runtime "org.pillarone:risk-analytics-core:1.9.20-SNAPSHOT"
+            runtime("org.pillarone:risk-analytics-commons:1.9.4-SNAPSHOT") { transitive = false }
         }
     }
 
@@ -50,6 +45,7 @@ grails.project.dependency.resolution = {
     }
 }
 
+grails.project.repos.default = "pillarone"
 grails.project.dependency.distribution = {
     String password = ""
     String user = ""
