@@ -37,6 +37,7 @@ public class ClaimDevelopmentPacket extends Claim {
 
     public ClaimDevelopmentPacket(Claim claim){
         set(claim);
+        setIncurredDate(claim.getDate());
     }
 
     @Override
@@ -153,7 +154,7 @@ public class ClaimDevelopmentPacket extends Claim {
     protected static final String INCURRED = "incurred";
     protected static final String PAID = "paid";
     protected static final String RESERVED = "reserved";
-    protected static final String CHANGE_IN_RESERVES = "change in reserves";
+    protected static final String CHANGE_IN_RESERVES = "changeInReserves";
 
     @Override
     public Map<String, Number> getValuesToSave() throws IllegalAccessException {
