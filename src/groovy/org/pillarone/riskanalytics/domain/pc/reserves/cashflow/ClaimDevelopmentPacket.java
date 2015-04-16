@@ -1,5 +1,7 @@
 package org.pillarone.riskanalytics.domain.pc.reserves.cashflow;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.pillarone.riskanalytics.domain.pc.claims.Claim;
 import org.pillarone.riskanalytics.domain.pc.claims.ClaimPacketFactory;
@@ -17,6 +19,8 @@ import java.util.Map;
  * @author shartmann (at) munichre (dot) com
  */
 public class ClaimDevelopmentPacket extends Claim {
+
+    protected static Log LOG = LogFactory.getLog(ClaimDevelopmentPacket.class);
 
     protected Claim claim;
 
@@ -242,7 +246,11 @@ public class ClaimDevelopmentPacket extends Claim {
     }
 
     public DateTime getIncurredDate() {
-        return incurredDate;
+        //AR-111
+        if(incurredDate != null){
+            return incurredDate;
+        }
+        return getDate();
     }
 
     public void setIncurredDate(DateTime incurredDate) {
