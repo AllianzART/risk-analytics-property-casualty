@@ -3,6 +3,7 @@ package org.pillarone.riskanalytics.domain.pc.reserves.cashflow;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
+import org.pillarone.riskanalytics.core.packets.IHasOccurrenceDate;
 import org.pillarone.riskanalytics.domain.pc.claims.Claim;
 import org.pillarone.riskanalytics.domain.pc.claims.ClaimPacketFactory;
 import org.pillarone.riskanalytics.domain.utils.marker.IReinsuranceContractMarker;
@@ -18,7 +19,7 @@ import java.util.Map;
 /**
  * @author shartmann (at) munichre (dot) com
  */
-public class ClaimDevelopmentPacket extends Claim {
+public class ClaimDevelopmentPacket extends Claim implements IHasOccurrenceDate {
 
     protected static Log LOG = LogFactory.getLog(ClaimDevelopmentPacket.class);
 
@@ -245,7 +246,7 @@ public class ClaimDevelopmentPacket extends Claim {
         this.changeInReserves = changeInReserves;
     }
 
-    public DateTime getIncurredDate() {
+    public DateTime getOccurrenceDate() {
         //AR-111
         if(incurredDate != null){
             return incurredDate;
