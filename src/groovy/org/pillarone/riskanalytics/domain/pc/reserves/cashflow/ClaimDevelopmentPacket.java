@@ -247,7 +247,15 @@ public class ClaimDevelopmentPacket extends Claim implements IHasOccurrenceDate 
     }
 
     public DateTime getOccurrenceDate() {
-        //AR-111
+        //AR-111 - IHasOccurrenceDate support
+        if(incurredDate != null){
+            return incurredDate;
+        }
+        return getDate();
+    }
+
+    public DateTime getIncurredDate() {
+        //AR-111 - pre-IHasOccurrenceDate, (temporarily?) left for legacy API support
         if(incurredDate != null){
             return incurredDate;
         }
