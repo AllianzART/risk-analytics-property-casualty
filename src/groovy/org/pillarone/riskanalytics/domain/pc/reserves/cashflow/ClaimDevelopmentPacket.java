@@ -267,7 +267,7 @@ public class ClaimDevelopmentPacket extends Claim implements IHasOccurrenceDate,
         this.incurredDate = incurredDate;
     }
 
-    public IAggregatableSummable sum(Collection<IAggregatableSummable> claims) {
+    public Packet sum(Collection<Packet> claims) {
         /** PA Note during work on AR-111
          **  This should probably be made a method of the class above...
          **/
@@ -279,7 +279,7 @@ public class ClaimDevelopmentPacket extends Claim implements IHasOccurrenceDate,
         double reserved = 0;
         double changeInReserves = 0;
 
-        for (IAggregatableSummable claimI: claims) {
+        for (Packet claimI: claims) {
             ClaimDevelopmentPacket claim = (ClaimDevelopmentPacket) claimI;
             paid += claim.getPaid();
             reserved += claim.getReserved();
@@ -306,15 +306,15 @@ public class ClaimDevelopmentPacket extends Claim implements IHasOccurrenceDate,
         summedClaims.setPaid(paid);
         summedClaims.setReserved(reserved);
         summedClaims.setChangeInReserves(changeInReserves);
-        return summedClaims;
+        return (Packet) summedClaims;
     }
 
-    public List<IAggregatableSummable> aggregateByBaseClaim(Collection<IAggregatableSummable> claims) {
+    public List<Packet> aggregateByBaseClaim(Collection<Packet> claims) {
 
-        List<IAggregatableSummable> aggregateByBaseClaim = new ArrayList<IAggregatableSummable>();
+        List<Packet> aggregateByBaseClaim = new ArrayList<Packet>();
         ListMultimap<Claim, ClaimDevelopmentPacket> claimsByBaseClaim = ArrayListMultimap.create();
 
-        for (IAggregatableSummable claim : claims) {
+        for (Packet claim : claims) {
             claimsByBaseClaim.put( ((ClaimDevelopmentPacket) claim).getOriginalClaim(), (ClaimDevelopmentPacket) claim);
         }
         for (Collection<ClaimDevelopmentPacket> claimsWithSameBaseClaim : claimsByBaseClaim.asMap().values()) {
