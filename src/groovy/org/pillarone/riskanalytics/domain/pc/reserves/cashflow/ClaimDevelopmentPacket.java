@@ -1,5 +1,8 @@
 package org.pillarone.riskanalytics.domain.pc.reserves.cashflow;
 
+
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
@@ -9,17 +12,15 @@ import org.pillarone.riskanalytics.domain.pc.claims.ClaimPacketFactory;
 import org.pillarone.riskanalytics.domain.utils.marker.IReinsuranceContractMarker;
 import org.pillarone.riskanalytics.domain.utils.marker.IPerilMarker;
 import org.pillarone.riskanalytics.domain.utils.marker.ISegmentMarker;
+import org.pillarone.riskanalytics.core.packets.IAggregatableSummable;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author shartmann (at) munichre (dot) com
  */
-public class ClaimDevelopmentPacket extends Claim implements IHasOccurrenceDate {
+public class ClaimDevelopmentPacket extends Claim implements IHasOccurrenceDate, IAggregatableSummable {
 
     protected static Log LOG = LogFactory.getLog(ClaimDevelopmentPacket.class);
 
@@ -265,4 +266,91 @@ public class ClaimDevelopmentPacket extends Claim implements IHasOccurrenceDate 
     public void setIncurredDate(DateTime incurredDate) {
         this.incurredDate = incurredDate;
     }
+
+    public IAggregatableSummable sum(Collection<IAggregatableSummable> claims) {
+        /** PA Note during work on AR-111
+         **  This should probably be made a method of the class above...
+         **/
+
+        if (claims.isEmpty()) return null;
+        if (claims.size() == 1) return claims.iterator().next();
+
+        double paid = 0;
+        double reserved = 0;
+        double changeInReserves = 0;
+
+        for (IAggregatableSummable claimI: claims) {
+            ClaimDevelopmentPacket claim = (ClaimDevelopmentPacket) claimI;
+            paid += claim.getPaid();
+            reserved += claim.getReserved();
+            // Summing every thing this time as the other sum sums even ultimates
+            changeInReserves += claim.getChangeInReserves(); //changes in reserves should be incremental by def
+        }
+
+//        ClaimRoot baseClaim = new ClaimRoot(ultimate, claims.get(0).getBaseClaim());
+        Claim baseClaim = new Claim();
+        baseClaim.set(((ClaimDevelopmentPacket)(claims.iterator().next())).getOriginalClaim());
+
+        //..hmmm how to do this right ?
+
+//        DateTime updateDate = claims.get(0).getUpdateDate();
+//        int updatePeriod = 0;
+//        if (claims.get(0).getUpdatePeriod() != null) {
+//            updatePeriod = claims.get(0).getUpdatePeriod();
+//        }
+
+        ClaimDevelopmentPacket summedClaims = new ClaimDevelopmentPacket(baseClaim);
+        // this may bite...
+//        applyMarkers(claims.get(0), summedClaims);
+
+        summedClaims.setPaid(paid);
+        summedClaims.setReserved(reserved);
+        summedClaims.setChangeInReserves(changeInReserves);
+        return summedClaims;
+    }
+
+    public List<IAggregatableSummable> aggregateByBaseClaim(Collection<IAggregatableSummable> claims) {
+
+        List<IAggregatableSummable> aggregateByBaseClaim = new ArrayList<IAggregatableSummable>();
+        ListMultimap<Claim, ClaimDevelopmentPacket> claimsByBaseClaim = ArrayListMultimap.create();
+
+        for (IAggregatableSummable claim : claims) {
+            claimsByBaseClaim.put( ((ClaimDevelopmentPacket) claim).getOriginalClaim(), (ClaimDevelopmentPacket) claim);
+        }
+        for (Collection<ClaimDevelopmentPacket> claimsWithSameBaseClaim : claimsByBaseClaim.asMap().values()) {
+            if (claimsWithSameBaseClaim.size() == 1) {
+                aggregateByBaseClaim.add(claimsWithSameBaseClaim.iterator().next());
+            }
+            else {
+                double paid = 0;
+                double reserved = 0;
+                double changeInReserves = 0;
+
+                for (ClaimDevelopmentPacket claim : claimsWithSameBaseClaim) {
+                    paid = claim.getPaid();
+                    reserved = claim.getReserved();
+                    // I'm not summing as I'd guess these not to be incremental but total values
+                    //assumption would be that we are looking at updates to the same claim, in chronological order
+                    changeInReserves += claim.getChangeInReserves(); //changes in reserves should be incremental by def
+                }
+                Claim baseClaim = new Claim();
+                baseClaim.set(((ClaimDevelopmentPacket) claims.iterator().next()).getOriginalClaim());
+
+//                int updatePeriod = 0;
+//                if (claims.get(0). != null) {
+//                    updatePeriod = claims.get(0).getUpdatePeriod();
+//                }
+
+                ClaimDevelopmentPacket aggregateClaim = new ClaimDevelopmentPacket(baseClaim);
+                aggregateClaim.setPaid(paid);
+                aggregateClaim.setReserved(reserved);
+                aggregateClaim.setChangeInReserves(changeInReserves);
+                //applyMarkers(claims.get(0), aggregateClaim); //Do we need them? Can't find the equivalent fields...
+                aggregateByBaseClaim.add(aggregateClaim);
+            }
+        }
+        return aggregateByBaseClaim;
+    }
+
+
 }
