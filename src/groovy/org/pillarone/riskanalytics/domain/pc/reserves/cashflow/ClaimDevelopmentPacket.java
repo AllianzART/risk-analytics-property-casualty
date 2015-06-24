@@ -7,6 +7,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joda.time.DateTime;
 import org.pillarone.riskanalytics.core.packets.IHasOccurrenceDate;
+import org.pillarone.riskanalytics.core.packets.Packet;
 import org.pillarone.riskanalytics.domain.pc.claims.Claim;
 import org.pillarone.riskanalytics.domain.pc.claims.ClaimPacketFactory;
 import org.pillarone.riskanalytics.domain.utils.marker.IReinsuranceContractMarker;
