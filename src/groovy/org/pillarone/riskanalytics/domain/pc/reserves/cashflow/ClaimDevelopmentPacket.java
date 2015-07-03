@@ -327,13 +327,23 @@ public class ClaimDevelopmentPacket extends Claim implements IHasOccurrenceDate,
                 double reserved = 0;
                 double changeInReserves = 0;
 
+                DateTime mostRecentDate = new DateTime(0).minusYears(200); // better safe than sorry
+
                 for (ClaimDevelopmentPacket claim : claimsWithSameBaseClaim) {
-                    paid = claim.getPaid();
-                    reserved = claim.getReserved();
+
+                    if (claim.getDate().isAfter(mostRecentDate)) {
+
+                        paid = claim.getPaid();
+                        reserved = claim.getReserved();
+
+                        mostRecentDate = claim.getDate();
+
+                    }
                     // I'm not summing as I'd guess these not to be incremental but total values
-                    //assumption would be that we are looking at updates to the same claim, in chronological order
+                    //assumption would be that we are looking at updates to the same claim
                     changeInReserves += claim.getChangeInReserves(); //changes in reserves should be incremental by def
                 }
+
                 Claim baseClaim = new Claim();
                 baseClaim.set(((ClaimDevelopmentPacket) claims.iterator().next()).getOriginalClaim());
 
