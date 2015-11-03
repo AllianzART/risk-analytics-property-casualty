@@ -1,21 +1,4 @@
-import org.pillarone.riskanalytics.core.output.CollectingModeFactory
-import org.pillarone.riskanalytics.core.parameterization.ConstraintsFactory
-import org.pillarone.riskanalytics.core.parameterization.SimpleConstraint
-import org.pillarone.riskanalytics.core.parameterization.validation.ValidatorRegistry
 import org.pillarone.riskanalytics.core.util.ResourceBundleRegistry
-import org.pillarone.riskanalytics.domain.pc.constraints.CompanyPortion
-import org.pillarone.riskanalytics.domain.pc.constraints.validation.UnityPortionValidator
-import org.pillarone.riskanalytics.domain.pc.filter.SegmentFilterValidator
-import org.pillarone.riskanalytics.domain.pc.generators.claims.validation.ClaimsGeneratorStrategyValidator
-import org.pillarone.riskanalytics.domain.pc.generators.claims.validation.TypableClaimsGeneratorValidator
-import org.pillarone.riskanalytics.domain.pc.generators.copulas.validation.DependencyMatrixValidator
-import org.pillarone.riskanalytics.domain.pc.output.AggregateDrillDownCollectingModeStrategy
-import org.pillarone.riskanalytics.domain.pc.reinsurance.commissions.validation.CommissionStrategyTypeValidator
-import org.pillarone.riskanalytics.domain.pc.reinsurance.contracts.validation.XLStrategyValidator
-import org.pillarone.riskanalytics.domain.pc.underwriting.validation.RiskBandsValidator
-import org.pillarone.riskanalytics.domain.pc.validation.UnityDoubleValidator
-import org.pillarone.riskanalytics.domain.utils.constraint.DoubleConstraints
-import org.pillarone.riskanalytics.domain.utils.validation.DistributionTypeValidatorPC
 
 class RiskAnalyticsPropertyCasualtyGrailsPlugin {
     // the plugin version
