@@ -1,5 +1,5 @@
 //Use a custom plugins dir, because different branches use different plugin versions
-grails.project.plugins.dir = "../local-plugins/RiskAnalyticsPropertyCasualty-AR-111"
+grails.project.plugins.dir = "../local-plugins/RiskAnalyticsPropertyCasualty-master"
 
 grails.project.dependency.resolver = "maven"
 
@@ -33,7 +33,7 @@ grails.project.dependency.resolution = {
         compile ":excel-import:1.0.0"
 
         if (appName == "RiskAnalyticsPropertyCasualty") {
-            runtime "org.pillarone:risk-analytics-core:AR-111-SNAPSHOT"
+            runtime "org.pillarone:risk-analytics-core:1.10-SNAPSHOT"
             runtime("org.pillarone:risk-analytics-commons:1.10-SNAPSHOT") { transitive = false }
         }
     }
@@ -46,7 +46,7 @@ grails.project.dependency.resolution = {
         }
     }
 }
-//grails.plugin.location.'risk-analytics-core' = "../risk-analytics-core-AR-111"
+//grails.plugin.location.'risk-analytics-core' = "../risk-analytics-core-master"
 
 grails.project.repos.default = "pillarone"
 grails.project.dependency.distribution = {

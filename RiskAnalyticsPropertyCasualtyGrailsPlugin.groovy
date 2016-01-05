@@ -2,7 +2,7 @@ import org.pillarone.riskanalytics.core.util.ResourceBundleRegistry
 
 class RiskAnalyticsPropertyCasualtyGrailsPlugin {
     // the plugin version
-    def version = "AR-111-SNAPSHOT"
+    def version = "1.10-SNAPSHOT"
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "2.3.2 > *"
     // the other plugins this plugin depends on

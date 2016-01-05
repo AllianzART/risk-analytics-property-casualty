@@ -3,7 +3,7 @@
     <property file="application.properties"/>
     <property name="GRAILS_JVM_OPTS" value="-Xmx900m -XX:MaxPermSize=256m -Duser.language='en'"/>
 
-    <get src="https://raw.githubusercontent.com/AllianzART/risk-analytics-core/AR-111/scripts/build.xml" dest="_build.xml" skipexisting="true" />
+    <get src="https://raw.githubusercontent.com/AllianzART/risk-analytics-core/master/scripts/build.xml" dest="_build.xml" skipexisting="true" />
 
 
     <copy tofile="_build.xml" overwrite="true" failonerror="false">
